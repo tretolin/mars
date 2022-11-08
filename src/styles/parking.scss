@@ -1,0 +1,30 @@
+.parking-frame {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    align-items: center;
+    border: 2px solid 1px;
+    justify-content: space-between;
+
+    & form {
+        text-align: center;
+        padding: 20px 30px;
+        background-color: #eee;
+        border-radius: 2%;;
+        min-width: 300px;
+    }
+
+    & .form-block {
+        Button {
+            cursor: point;
+            width:100%;
+            margin-top: 20px;
+        }
+    }
+
+    .native-select {
+        width:70%;
+        margin: 30px 0;
+    }
+
+}
