@@ -1,0 +1,11 @@
+###
+GET http://localhost:4000/api
+
+###
+POST http://localhost:4000/api/agrega-vehiculo
+Content-Type:application/json
+
+{
+    placa:"SBR-4215",
+    type:1
+}

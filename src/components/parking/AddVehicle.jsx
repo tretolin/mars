@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import NativeSelect from '@mui/material/NativeSelect';
 import { useState, useEffect } from 'react';
 import { placaValidator } from './validations';
-
+import { getAllVehicles, addVehicle } from '../../api/parking.api'
 // import { ConstructionOutlined } from '@mui/icons-material';
 const AddVehicle = () => {
 
@@ -13,35 +13,60 @@ const AddVehicle = () => {
     const [formValues, setFormValues] = useState(initalValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false); 
-    const [isCreated, setIsCreated] = useState(false); 
+    const [isCreated, setIsCreated] = useState(false);
+    const [vehicles, setVehicles] = useState();
 
     const handleChange = (e)=> {
-        // console.log(e.target)
         const { name, value} = e.target;
         setFormValues({ ...formValues, [name]: value})
-        // console.log(formValues);
+    }
+
+    async function getVehicles() {
+        const allVehicles = await getAllVehicles();
+        setVehicles(allVehicles);
     }
 
     const validateData = () => {
         validate(formValues)
         setIsSubmit(true)
+        saveNewVehicle(formValues);
+    }
+
+    const checkDuplicated = (placa) => {
+        console.log('Placa revisada', placa)
+        const duplicated = vehicles.find( vehicle => vehicle.placa === placa) !== undefined;
+        console.log(duplicated)
+        return duplicated 
     }
 
     const validate = (values) => {
         let errors = placaValidator(values)
+        if (checkDuplicated(values.placa)) {
+            errors.placa = 'Esta placa ya está registrada'
+        }
         setFormErrors(errors)
         return errors
     }
 
+    const saveNewVehicle = (values) => {
+        // console.log('values', values);
+        addVehicle(values);
+    }
+
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log('%cEnviado', 'color:green')
             setIsSubmit(false);
             setIsCreated(true);
         }
     })
 
+    useEffect(() => {
+        getVehicles()
+    }, [])
+
     return <div className="parking-frame">
+        <div>Vehículos: { vehicles ? vehicles.length : 0 }</div>
+        <pre>{ formErrors ?  formErrors.length : "--" }</pre>
         <div>
             {/* <ArrowBackIcon fontSize="medium" className='align-icon' /> */}
             <h2> <Link to="/"><ArrowBack/></Link> Nuevo vehículo</h2>
