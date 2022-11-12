@@ -1,10 +1,10 @@
-import { Button, OutlinedInput, InputLabel, Select, MenuItem, FormControl } from '@mui/material';
+import { Button, InputLabel, Select, MenuItem, FormControl } from '@mui/material';
 import PropTypes from 'prop-types'
 import { ArrowBack }  from '../../utils.tsx';
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { placaValidator } from './validations';
 import { useState, useEffect } from 'react';
-import { getAvailableVehicles, getCheckoutVehicles, checkIn } from '../../api/parking.api'
+import { getAvailableVehicles, getCheckoutVehicles, checkIn, checkOut } from '../../api/parking.api'
 
 const CheckParking = ({placa, type}) => {
     const initalValues = { placa:'', id:0 }
@@ -13,7 +13,7 @@ const CheckParking = ({placa, type}) => {
     const [isSubmit, setIsSubmit] = useState(false); 
     const [isRegistered, setIsRegistered] = useState(false);
     const [vehicles, setVehicles] = useState([]);
-    const [vehicleSelected, setVehicleSelected] = useState(0);
+    const [vehicleSelected] = useState(0);
 
     const enter = type === 'in';
 
@@ -32,11 +32,18 @@ const CheckParking = ({placa, type}) => {
         validate(formValues)
         // console.log(formValues)
         setIsSubmit(true)
-        checkIn({
-            idVehicle: vehicles[formValues.id].idVehicle,
-            checkIn: new Date().toISOString().slice(0, 19).replace('T', ' '),
-            checkOut: null
-        })
+
+        enter ? 
+            checkIn({
+                idVehicle: vehicles[formValues.id].idVehicle,
+                checkIn: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                checkOut: null
+            }) :
+            checkOut({
+                idVehicle: vehicles[formValues.id].idVehicle,
+                checkOut: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            }) 
+
         setIsRegistered(true)
     }
     

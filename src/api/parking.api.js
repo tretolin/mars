@@ -5,9 +5,17 @@ axios.defaults.baseURL = 'http://localhost:4000/api';
 const errorLog = (error) => { console.log(error) }
 
 // GET all vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
-export async function getAllVehicles(checkin) {
+export async function getAllVehicles() {
     let vehicles = [];
     await axios.get(`/getAllVehicles`).then( res => { vehicles = res.data }, (error) => errorLog(error))
+
+    return vehicles;
+}
+
+// GET all records - - - - - - - - - - - - - - - - - - - - - - - - - 
+export async function getAllrecords() {
+    let vehicles = [];
+    await axios.get(`/getAllRecords`).then( res => { vehicles = res.data }, (error) => errorLog(error))
 
     return vehicles;
 }
@@ -15,9 +23,10 @@ export async function getAllVehicles(checkin) {
 // GET available vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
 export async function getAvailableVehicles() {
     let vehicles = [];
-    await axios.get('/availableVehicles').then( res => { vehicles = res.data }, (error) => errorLog(error))
-
+    try {
+        await axios.get('/availableVehicles').then( res => { vehicles = res.data }, (error) => errorLog(error))
     return vehicles;
+    } catch (e) { console.error(e) }
 }
 
 // GET checkout vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -36,9 +45,15 @@ export async function addVehicle(vehicleData) {
 
 // POST Register checkin - - - - - - - - - - - - - - - - - - - - - - - - - 
 export async function checkIn(register) {
-    console.log(register);
     let checInRegister;
     await axios.post('/check-in', register).then( res => { checInRegister = res.data }, (error) => errorLog(error))
+    return checInRegister;
+}
+
+// PUT update checkout - - - - - - - - - - - - - - - - - - - - - - - - - 
+export async function checkOut(register) {
+    let checInRegister;
+    await axios.put('/check-out', register).then( res => { checInRegister = res.data }, (error) => errorLog(error))
     return checInRegister;
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
+// import styles from "./parking.scss";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Link } from 'react-router-dom'
@@ -7,6 +8,10 @@ import paths from '../../routes';
 
 const HomePage = () => {
     console.log('Home Page')
+
+    // const checkParking = (arriving) => {
+
+    // }
 
     return <div className="parking-frame">
         <h2>Home</h2>
