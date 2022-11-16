@@ -58,7 +58,7 @@ const CheckParking = ({placa, type}) => {
     })
 
     useEffect(() => {
-        this.getVehicles()
+        getVehicles()
     }, [])
 
 
