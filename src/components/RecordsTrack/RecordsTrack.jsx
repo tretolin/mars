@@ -59,7 +59,7 @@ const RecordsTrack = () => {
     if (!date) return '';
     let format = new Date(date);
     let minutes = (format.getMinutes() < 10 ? '0' : '') + format.getMinutes();
-    return [format.getUTCHours() % 12, minutes].join(':') + (format.getUTCHours() > 12 ? ' PM' : ' AM')
+    return [format.getUTCHours() % 12, minutes].join(':') + (format.getHours() > 12 ? ' PM' : ' AM')
   }
 
   useEffect(() => {
@@ -87,10 +87,10 @@ const RecordsTrack = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {records.map((row) => (
+                {records.map((row, index) => (
                   <TableRow
                     className={row.check_in && !row.check_out ? 'active': ''}
-                    key={row.folio}
+                    key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell>

@@ -71,4 +71,10 @@ export async function restartMonth() {
     await axios.get('/restart-month').then( res => { residentVehicles = res.data }, (error) => errorLog(error))
     return residentVehicles;
 }
+// GET reset vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
+export async function resetVehicles() {
+    let resetVehicles;
+    axios.get('/reset-vehicles').then( res => { resetVehicles = res.status }, (error) => errorLog(error))
+    return resetVehicles;
+}
 

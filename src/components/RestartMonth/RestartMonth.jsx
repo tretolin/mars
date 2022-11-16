@@ -1,7 +1,7 @@
 import { Button, OutlinedInput, InputLabel } from '@mui/material';
 import { ArrowBack }  from '../../utils.tsx';
 import { Link, useNavigate } from "react-router-dom";
-import { restartMonth } from '../../api/parking.api';
+import { restartMonth, resetVehicles } from '../../api/parking.api';
 import { useState, useEffect } from 'react';
 const RestartMonth = () => {
 
@@ -11,11 +11,15 @@ const RestartMonth = () => {
 
   async function startMonth() {
     try {
-      await restartMonth();
       setLoading(true)
-      setTimeout( function () {
-        navigate('/')
-      }, 2000)
+      const restarMonthData = await restartMonth();
+      if (restarMonthData) {
+        await resetVehicles();
+          setTimeout( function () {
+            navigate('/')
+          }, 2000)
+      }
+
     } catch(e) { console.error(e) }
   }
 

@@ -102,23 +102,18 @@ routes.get('/restart-month', (req, res) => {
     req.getConnection((err, conn) => {
         if (err) { return res.send(err) }
         let query = `TRUNCATE TABLE parking_records`;
-        console.log('query', query)
-
         conn.query(query,[], (err, rows) => {
+            if(err) return res.send(err)
+            res.json(rows)
+        })
+    })
+})
 
-            req.getConnection((err, conn) => {
-                if (err) { return res.send(err) }
-                let query = `DELETE FROM Vehicles WHERE type != 1; SELECT * FROM Vehicles`;
-                console.log('query', query)
-                
-                conn.query(query,[], (errDelete, rowsDelete) => {
-                    console.log('ROWS', rows)
-                    if(errDelete) return res.send(rowsDelete)
-                    res.json(rowsDelete)
-                })
-            })
-            
-            console.log('ROWS', rows)
+routes.get('/reset-vehicles', (req, res) => {
+    req.getConnection((err, conn) => {
+        if (err) { return res.send(err) }
+        let query = `DELETE FROM Vehicles WHERE type != 1`;
+        conn.query(query,[], (err, rows) => {
             if(err) return res.send(err)
             res.json(rows)
         })
