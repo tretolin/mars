@@ -1,0 +1,16 @@
+.records-track {
+    .records-header {
+        font-weight: bold;;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 15px;
+    }
+    .title {
+        font-weight: bold;
+    }
+    tr.active td {
+        color: green;
+        background-color: #cde8cd;
+        font-weight: bold;
+    }
+}
