@@ -4,6 +4,14 @@ axios.defaults.baseURL = 'http://localhost:4000/api';
 
 const errorLog = (error) => { console.log(error) }
 
+// GET all profiles - - - - - - - - - - - - - - - - - - - - - - - - - 
+export async function getAllProfiles() {
+    let profiles = [];
+    await axios.get(`/getAllProfiles`).then( res => { profiles = res.data }, (error) => errorLog(error))
+
+    return profiles;
+}
+
 // GET all vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
 export async function getAllVehicles() {
     let vehicles = [];
@@ -14,10 +22,10 @@ export async function getAllVehicles() {
 
 // GET all records - - - - - - - - - - - - - - - - - - - - - - - - - 
 export async function getAllrecords() {
-    let vehicles = [];
-    await axios.get(`/getAllRecords`).then( res => { vehicles = res.data }, (error) => errorLog(error))
+    let records = [];
+    await axios.get(`/get-records`).then( res => { records = res.data }, (error) => errorLog(error))
 
-    return vehicles;
+    return records;
 }
 
 // GET available vehicles - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -55,5 +63,12 @@ export async function checkOut(register) {
     let checInRegister;
     await axios.put('/check-out', register).then( res => { checInRegister = res.data }, (error) => errorLog(error))
     return checInRegister;
+}
+
+// GET restart month - - - - - - - - - - - - - - - - - - - - - - - - - 
+export async function restartMonth() {
+    let residentVehicles;
+    await axios.get('/restart-month').then( res => { residentVehicles = res.data }, (error) => errorLog(error))
+    return residentVehicles;
 }
 

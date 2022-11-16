@@ -11,6 +11,16 @@ routes.get('/getAllVehicles', (req, res) => {
     })
 })
 
+routes.get('/getAllRoles', (req, res) => {
+    req.getConnection((err, conn) => {
+        if (err) { return res.send(err) }
+        conn.query('SELECT * FROM roles', (err, rows) => {
+            if(err) return res.send(err)
+            res.json(rows)
+        })
+    })
+})
+
 routes.get('/availableVehicles', (req, res) => {
     req.getConnection((err, conn) => {
         if (err) { return res.send(err) }
@@ -39,10 +49,8 @@ routes.get('/checkoutVehicles', (req, res) => {
 })
 
 routes.post('/agrega-vehiculo', (req, res) => {
-    console.log('BODY', req.body)
     const placa = req.body.placa;
     const type = req.body.type;
-    //console.log(req.params)
     req.getConnection((err, conn) => {
         if (err) { return res.send(err) }
         conn.query('INSERT INTO vehicles (placa, type) VALUES(?,?)',[placa, type], (err, rows) => {
@@ -53,9 +61,7 @@ routes.post('/agrega-vehiculo', (req, res) => {
 })
 
 routes.post('/check-in', (req, res) => {
-    console.log('BODY', req.body)
     const {idVehicle, checkIn} = req.body; 
-    console.log('PARAMS', idVehicle, checkIn)
     req.getConnection((err, conn) => {
         if (err) { return res.send(err) }
         conn.query(`INSERT INTO parking_records (id_vehicle, check_in, check_out) VALUES(?,?,?)`,[idVehicle, checkIn, null], (err, rows) => {
@@ -66,14 +72,53 @@ routes.post('/check-in', (req, res) => {
 })
 
 routes.put('/check-out', (req, res) => {
-    console.log('BODY', req.body)
     const {idVehicle, checkOut} = req.body; 
-    console.log('PARAMS', idVehicle, checkOut)
     req.getConnection((err, conn) => {
         if (err) { return res.send(err) }
         let query = `UPDATE parking_records as pr SET check_out = "${checkOut}" WHERE pr.id_vehicle = ${idVehicle} AND pr.check_out IS NULL`;
-        console.log('query', query)
         conn.query(query,[], (err, rows) => {
+            if(err) return res.send(err)
+            res.json(rows)
+        })
+    })
+})
+
+routes.get('/get-records', (req, res) => {
+    req.getConnection((err, conn) => {
+        if (err) { return res.send(err) }
+        let query = `
+        SELECT * FROM parking_records as pr
+        LEFT JOIN Vehicles as vh ON pr.id_vehicle = vh.idVehicle
+        JOIN roles WHERE roles.id_role = vh.type 
+        `;
+        conn.query(query,[], (err, rows) => {
+            if(err) return res.send(err)
+            res.json(rows)
+        })
+    })
+})
+
+routes.get('/restart-month', (req, res) => {
+    req.getConnection((err, conn) => {
+        if (err) { return res.send(err) }
+        let query = `TRUNCATE TABLE parking_records`;
+        console.log('query', query)
+
+        conn.query(query,[], (err, rows) => {
+
+            req.getConnection((err, conn) => {
+                if (err) { return res.send(err) }
+                let query = `DELETE FROM Vehicles WHERE type != 1; SELECT * FROM Vehicles`;
+                console.log('query', query)
+                
+                conn.query(query,[], (errDelete, rowsDelete) => {
+                    console.log('ROWS', rows)
+                    if(errDelete) return res.send(rowsDelete)
+                    res.json(rowsDelete)
+                })
+            })
+            
+            console.log('ROWS', rows)
             if(err) return res.send(err)
             res.json(rows)
         })

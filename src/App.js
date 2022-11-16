@@ -1,10 +1,11 @@
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 
-import HomePage from "./components/parking/HomePage"
+import HomePage from "./components/HomePage"
 // import ParkingAccess from './components/ParkingAccess'
-import CheckParking from "./components/parking/CheckParking"
-import AddVehicle from "./components/parking/AddVehicle"
+import CheckParking from "./components/CheckParking"
+import AddVehicle from "./components/AddVehicle"
+import RestartMonth from "./components/RestartMonth"
 import paths from './routes';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
           <Route path={ paths.REGISTER_ENTER } element={<CheckParking type='in'/>} />
           <Route path={ paths.REGISTER_LEAVE } element={<CheckParking type='out'/>} />
           <Route path={ paths.NEW_VEHICLE} element={<AddVehicle />} />
-          {/* <Route path={ paths.RESTART_MONTH} element={<RestartMonth />} /> */}
+          <Route path={ paths.RESTART_MONTH} element={<RestartMonth />} />
       </Routes>
 
           {/* <ParkingAccess /> */}
