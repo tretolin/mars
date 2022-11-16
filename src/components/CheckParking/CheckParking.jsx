@@ -53,12 +53,12 @@ const CheckParking = ({placa, type}) => {
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            setIsSubmit(false);
+            this.setIsSubmit(false);
         }
     })
 
     useEffect(() => {
-        getVehicles()
+        this.getVehicles()
     }, [])
 
 

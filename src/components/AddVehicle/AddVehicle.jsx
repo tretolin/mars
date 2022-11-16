@@ -14,7 +14,7 @@ const AddVehicle = () => {
     const [formValues, setFormValues] = useState(initalValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false); 
-    const [isCreated, setIsCreated] = useState(false);
+    const [isCreated] = useState(false);
     const [vehicles, setVehicles] = useState();
 
     const handleChange = (e)=> {
@@ -53,8 +53,8 @@ const AddVehicle = () => {
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            setIsSubmit(false);
-            setIsCreated(true);
+            this.setIsSubmit(false);
+            this.setIsCreated(true);
         }
     })
 
